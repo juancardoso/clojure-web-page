@@ -5,11 +5,17 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [config.core :refer [env]]
             [rum.core :refer [defc render-static-markup]]
-            [next.jdbc :as jdbc])
+            [next.jdbc :as jdbc]
+            [migratus.core :as migratus])
   (:gen-class))
 
 ; conection database config, is retrieved from config.edn file. 
 (def datasource (jdbc/get-datasource (:db env)))
+
+(def migratus-config {:store :database
+                      :migration-dir "migrations/"
+                      :migration-table-name "migratus"
+                      :db (:db env)})
 
 (defc template [headline component]
   [:div {:id "main-div"
@@ -24,8 +30,8 @@
 ; jdbc/execute-one! -> all result
 (defc main-page []
   ; here a map is returned and greeting is turned the key and hello is the value
-  (let [result (jdbc/execute-one! datasource ["SELECT 'Hello' as greeting"])]
-    [:p (:greeting result)]))
+  (let [result (jdbc/execute-one! datasource ["SELECT greeting FROM greetings WHERE lang = 'br'"])]
+    [:p (:greetings/greeting result)]))
 
 (defc friends-page []
   [:p "This is the friends page, it is empty, yet"])
@@ -36,4 +42,5 @@
 
 (defn -main
   [& args]
+  (migratus/migrate migratus-config)
   (run-jetty (wrap-defaults app site-defaults) {:port (:port env)}))

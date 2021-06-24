@@ -1,7 +1,7 @@
 {:port 80
  :db {:dbtype "postgresql"
      :subprotocol "postgresql"
-      :subname "postgres"
+      :subname "//172.17.0.2/postgres"
       :host "172.17.0.2"
       :user "postgres"
       :password "123456"}}
