@@ -3,34 +3,26 @@
 Learned aquired from: https://www.youtube.com/channel/UCFCaMBSbXWg1bfaQ0tUpA-w
 
 ## Installation
-
-Download from http://example.com/FIXME.
+- Install leiningen (https://leiningen.org/#install)
+- Install docker and configure it
+    
+        $ sudo apt-get install docker
+        $ sudo docker network create -d bridge docker-network --subnet=172.17.0.0/24
+        $ sudo docker run -network docker-network --ip 172.17.0.2 --name scrapbook_db -e POSTGRES_PASSWORD=123456 -d postgres
 
 ## Usage
 
-FIXME: explanation
+- Start postgres container if not already started
 
-    $ java -jar friendwall-0.1.0-standalone.jar [args]
+        $ sudo docker start scrapbook_db
 
-## Options
+- Open a terminal into root directory and run the project
 
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+        $ sudo lein run
 
 ## License
 
-Copyright © 2021 FIXME
+Copyright © 2021
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
